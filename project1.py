@@ -3,7 +3,6 @@ import numpy as np
 import random
 
 
-
 #pragma: coderesponse template
 def get_order(n_samples):
     try:
@@ -151,12 +150,6 @@ def average_perceptron(feature_matrix, labels, T):
     iterations through the data set, there is no need to worry about
     stopping early.
 
-    NOTE: Please use the previously implemented functions when applicable.
-    Do not copy paste code from previous parts.
-
-    NOTE: Iterate the data matrix by the orders returned by get_order(feature_matrix.shape[0])
-
-
     Args:
         feature_matrix -  A numpy matrix describing the given data. Each row
             represents a single data point.
@@ -171,8 +164,6 @@ def average_perceptron(feature_matrix, labels, T):
     number with the value of the average theta_0, the offset classification
     parameter, found after T iterations through the feature matrix.
 
-    Hint: It is difficult to keep a running average; however, it is simple to
-    find a sum and divide.
     """
     current_theta = np.zeros(feature_matrix.shape[1])
     current_theta_0 = 0.0
