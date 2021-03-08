@@ -365,7 +365,6 @@ def bag_of_words(texts):
     Inputs a list of string reviews
     Returns a dictionary of unique unigrams occurring over the input
 
-    Feel free to change this code as guided by Problem 9
     """
     dictionary = {} # maps word to unique index
     fhandle = open('stopwords.txt')
@@ -391,7 +390,6 @@ def extract_bow_feature_vectors(reviews, dictionary):
     The returned matrix is of shape (n, m), where n is the number of review s
     and m the total number of entries in the dictionary.
 
-    Feel free to change this code as guided by Problem 9
     """
 
     num_reviews = len(reviews)
