@@ -1,9 +1,11 @@
 from string import punctuation, digits
 import numpy as np
 import random
+import math
 
 
-#pragma: coderesponse template
+
+
 def get_order(n_samples):
     try:
         with open(str(n_samples) + '.txt') as fp:
@@ -14,10 +16,10 @@ def get_order(n_samples):
         indices = list(range(n_samples))
         random.shuffle(indices)
         return indices
-#pragma: coderesponse end
 
 
-#pragma: coderesponse template
+
+
 def hinge_loss_single(feature_vector, label, theta, theta_0):
     """
     Finds the hinge loss on a single data point given specific classification
@@ -37,6 +39,10 @@ def hinge_loss_single(feature_vector, label, theta, theta_0):
 
     x = feature_vector
     y = label
+    
+    #Hinge loss is represented as 0 or 1-z where
+    #z= y(i)*(theta*x(i)+theta_0)
+    #if z>=1 then return 0, 1-z otherwise
     hinge_loss = y*((np.dot(theta,x))+theta_0)
     if hinge_loss >=1:
         return 0
@@ -98,6 +104,10 @@ def perceptron_single_step_update(
     real valued number with the value of theta_0 after the current updated has
     completed.
     """
+    #We know that for single parameter update in perceptron algorithm the condition-
+    #if y(i)(theta.x(i)+theta_0)<=0
+    #   then theta = theta+ y(i)*x(i)
+    #   and theta_0 = theta_0+y(i)
     if float(label*(np.dot(current_theta,feature_vector)+current_theta_0)) <= 0.0:
         current_theta = current_theta + np.dot(label,feature_vector)
         current_theta_0 = current_theta_0+label
@@ -114,11 +124,6 @@ def perceptron(feature_matrix, labels, T):
     iterations through the data set, there is no need to worry about
     stopping early.
 
-    NOTE: Please use the previously implemented functions when applicable.
-    Do not copy paste code from previous parts.
-
-    NOTE: Iterate the data matrix by the orders returned by get_order(feature_matrix.shape[0])
-
     Args:
         feature_matrix -  A numpy matrix describing the given data. Each row
             represents a single data point.
@@ -133,7 +138,7 @@ def perceptron(feature_matrix, labels, T):
     theta_0, the offset classification parameter, after T iterations through
     the feature matrix.
     """
- 
+    
     current_theta = np.zeros(feature_matrix.shape[1])
     current_theta_0 = 0.0
     for t in range(T):
@@ -165,6 +170,9 @@ def average_perceptron(feature_matrix, labels, T):
     parameter, found after T iterations through the feature matrix.
 
     """
+    
+    #Average perceptron is different than perceptron in terms of returning value
+    #In Average perceptron the average of theta and theta_0 are get returned
     current_theta = np.zeros(feature_matrix.shape[1])
     current_theta_0 = 0.0
     average_theta = 0.0
@@ -207,6 +215,15 @@ def pegasos_single_step_update(
     real valued number with the value of theta_0 after the current updated has
     completed.
     """
+  
+    #In pegasus algorithm the update takes place as follows:
+    #if y(i)(theta.x(i)+theta_0)<=1
+    #   then theta = (1-eta*L)theta+ eta*y(i)*x(i)
+    #   and theta_0 = theta_0+eta*y(i)
+    #else
+    #   theta = (1-eta*L)theta
+    #   theta_0 = theta_0
+    
     x = feature_vector
     y = label
     if y*(np.dot(current_theta,x)+current_theta_0)<=1:
@@ -228,9 +245,6 @@ def pegasos(feature_matrix, labels, T, L):
     where t is a counter for the number of updates performed so far (between 1
     and nT inclusive).
 
-    NOTE: Please use the previously implemented functions when applicable.
-    Do not copy paste code from previous parts.
-
     Args:
         feature_matrix - A numpy matrix describing the given data. Each row
             represents a single data point.
@@ -247,7 +261,7 @@ def pegasos(feature_matrix, labels, T, L):
     number with the value of the theta_0, the offset classification
     parameter, found after T iterations through the feature matrix.
     """
-    import math
+
     x = feature_matrix
     y = labels
     current_theta = np.zeros(x.shape[1])
@@ -357,7 +371,7 @@ def bag_of_words(texts):
     Returns a dictionary of unique unigrams occurring over the input
 
     """
-    dictionary = {} # maps word to unique index
+    dictionary = {} 
     fhandle = open('stopwords.txt')
     stopwords_list = list()
     for words in fhandle:
